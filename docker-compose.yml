@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: app
+    command: "php artisan serve --host=0.0.0.0 --port=9100"
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    volumes:
+      - .:/var/www/html:cached
+    networks:
+      - laravel-network
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "9100:9100"
+  db:
+    image: postgres:15
+    container_name: postgres   
+    restart: unless-stopped
+    env_file: .env
+    environment:  
+      - POSTGRES_DB=YalahTaxi
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=laragon
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - laravel-network
+    ports:
+      - "5432:5432"  
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel-network
+
+volumes:
+  postgres-data:
+
+networks:
+  laravel-network:
+    driver: bridge
