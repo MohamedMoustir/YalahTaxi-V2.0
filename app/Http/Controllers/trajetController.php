@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class trajetController extends Controller
 {
-  public function index()
-  {
-    return view('admin.dashboard');
-  }
+
 
   public function ditlesTrajets(){
     return view('admin.trajet');
