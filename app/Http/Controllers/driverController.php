@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\user;
 use App\Models\places;
+use App\Models\Comment;
+
 
 
 use Carbon\Carbon;
@@ -28,14 +30,15 @@ class driverController extends Controller
             'trajet.course',
             'driveer',
             'driveer.user',
-        ]);
-
+            'driveer.user.Comment'
+        ])->get();
+        foreach ($trajets as $trajet) {
+            dd($trajet->driveer->comment);
+        }
 
         if ($request->has('search') || $request->has('sear')) {
             $search = $request->search;
             $sear = $request->sear;
-
-
             $trajets->whereHas('trajet', function ($query) use ($search) {
                 $query->where('nom', 'ILIKE', "%{$search}%");
             });
@@ -46,10 +49,10 @@ class driverController extends Controller
         }
 
         $trajets = $trajets->paginate(6);
-
         $users = user::find(auth::id());
+        
 
-        return view('home', compact('trajets', 'users'));
+        return view('home', compact('trajets', 'users','commentsedite'));
     }
 
 
@@ -78,7 +81,9 @@ class driverController extends Controller
 
         $places = places::where('statuts', 'réservé')->Where('driveer_id', $id)->count();
 
-        return view('detiles', compact('trajets', 'details_trajet', 'course', 'disponibilites', 'places'))->with('status', 'reservations sucsses');
+        $comments = Comment::where('driveer_id', $driver->id)->with('user')->paginate(1);
+       $commentTrue = false;
+        return view('detiles', compact('trajets', 'details_trajet', 'course', 'disponibilites', 'places','comments','commentTrue'))->with('status', 'reservations sucsses');
 
     }
 
