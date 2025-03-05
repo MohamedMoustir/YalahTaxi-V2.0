@@ -44,4 +44,7 @@ class driveer extends Model
     public function places(){
         $this->hasMany(places::class );
     }
+    public function comment(){
+        $this->hasMany(Comment::class);
+    }
 }

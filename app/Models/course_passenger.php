@@ -31,5 +31,9 @@ class course_passenger extends Model
     {
         return $this->belongsTo(User::class);
     }   
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'payment_id', 'payment_id');
+    }
 
 }
