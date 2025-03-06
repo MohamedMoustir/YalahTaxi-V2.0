@@ -19,10 +19,10 @@
                         @foreach ( $reservation as $reserv )
                         <tr>
                         @if (is_object($user))
-    <td>{{ $user->name }}</td>
-@else
-    <td>User not found</td>
-@endif
+                            <td>{{ $user->name }}</td>
+                        @else
+                            <td>User not found</td>
+                        @endif
                            
                             <td>{{ $reserv->depart }}</td>
                             <td>{{ $reserv->arriver }}</td>

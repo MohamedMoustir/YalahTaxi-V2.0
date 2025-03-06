@@ -15,6 +15,8 @@ use App\Models\course_passenger;
 use App\Models\user;
 use App\Models\places;
 use App\Models\Notification;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 class paymentController extends Controller
 {
 
@@ -35,7 +37,7 @@ class paymentController extends Controller
     public function pay(request $request)
     {
         try {
-     
+
             $reservation = course_passenger::create([
                 'course_id' => $request->course_id,
                 'passenger_id' => Auth::id(),
@@ -44,19 +46,19 @@ class paymentController extends Controller
                 'departure_time' => $request->departure_time,
                 'price' => 120,
                 'status' => 'pending',
-                'payment_id'=>'aa',
+                'payment_id' => 'aa',
             ]);
             $reservation->save();
             $course_passenger_id = $reservation->id;
 
             $place = places::create([
                 'course_passenger_id' => $course_passenger_id,
-                'driveer_id' => $request->driveer_id,
+                'driveer_id' => $request->driver_id,
             ]);
 
             $place = Notification::create([
                 'user_id' => Auth::id(),
-                'driveer_id' => $request->driveer_id,
+                'driveer_id' => $request->driver_id,
                 'title' => 'Réservation de trajet',
                 'content' => 'Votre réservation a été confirmée avec succès.',
 
@@ -67,6 +69,9 @@ class paymentController extends Controller
                 'returnUrl' => url('success'),
                 'cancelUrl' => url('error')
             ))->send();
+                 
+
+        
 
             if ($response->isRedirect()) {
                 return redirect($response->getRedirectUrl());
@@ -79,7 +84,7 @@ class paymentController extends Controller
     }
     public function success(request $request)
     {
-  
+
         if ($request->input('paymentId') && $request->input('PayerID')) {
             $transaction = $this->gateway->completePurchase(array(
                 'payer_id' => $request->input('PayerID'),
@@ -91,7 +96,7 @@ class paymentController extends Controller
             if ($response->isSuccessful()) {
 
                 $arr = $response->getData();
-                
+
                 $payment = new Payment();
                 $payment->payment_id = $arr['id'];
                 $payment->payer_id = $arr['payer']['payer_info']['payer_id'];
@@ -106,7 +111,9 @@ class paymentController extends Controller
                 $last_course_passenger = course_passenger::latest()->first();
                 $last_course_passenger->payment_id = $arr['id'];
                 $last_course_passenger->save();
-                return 'done';
+
+             
+                return redirect(session('previous_url')); 
 
 
             } else {

@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\user;
 use App\Models\places;
 use App\Models\Comment;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 
@@ -30,11 +31,8 @@ class driverController extends Controller
             'trajet.course',
             'driveer',
             'driveer.user',
-            'driveer.user.Comment'
-        ])->get();
-        foreach ($trajets as $trajet) {
-            dd($trajet->driveer->comment);
-        }
+        
+        ]);
 
         if ($request->has('search') || $request->has('sear')) {
             $search = $request->search;
@@ -50,9 +48,9 @@ class driverController extends Controller
 
         $trajets = $trajets->paginate(6);
         $users = user::find(auth::id());
-        
+     
 
-        return view('home', compact('trajets', 'users','commentsedite'));
+        return view('home', compact('trajets', 'users'));
     }
 
 
@@ -99,11 +97,10 @@ class driverController extends Controller
 
         foreach ($reservation as $q) {
             $user = user::find($q->passenger_id);
-
         }
 
 
-
+ 
         foreach ($reservation as $reservatio) {
             $now = Carbon::now();
             $disponibilites = disponibilites::where('driveer_id', $reservatio->course->id_driver)->latest()->first();
@@ -112,17 +109,22 @@ class driverController extends Controller
             $diffInMinutes = $now->diffInMinutes($departureTime);
 
             if ($diffInMinutes < 0) {
-                $reservatio->where('statuts', 'pending')->update(['status' => 'refuser']);
+            
+                $reservatio->where('status', 'pending')->update(['status' => 'refuser']);
+                $driver = driveer::where('user_id',Auth::id())->update(['is_available'=>false]);
+                
+            }else{
+                
+                $driver = driveer::where('user_id',Auth::id())->update(['is_available'=>true]);
             }
 
         }
+
         // $user = User::find(auth::id());
         // $notifications = $user->notifications;
         // var_dump($notifications);
 
-
-
-        return view('driver.index', compact('reservation', 'driver'));
+        return view('driver.index', compact('reservation', 'driver','user'));
     }
 
 
@@ -175,4 +177,7 @@ class driverController extends Controller
 
     }
 
+
+
+   
 }

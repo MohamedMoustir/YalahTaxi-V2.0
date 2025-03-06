@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\user;
 use App\Models\places;
 use App\Models\Notification;
-
+use App\Mail\SendQrCodeMail;
+use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class passeger_courseController extends Controller
@@ -69,6 +71,10 @@ class passeger_courseController extends Controller
         $reservation = course_passenger::find($id);
         $reservation->update(['status' => 'approved']);
 
+        $reservationInfo = 'ID: '. $reservation->passenger_id . ' - Driver: ' . Auth()->user()->name . ' - Depart: ' . $reservation->depart . ' - Arrive: ' . $reservation->arrive;
+        $qrCode = QrCode::size(300)->generate($reservationInfo);
+        Mail::to('itsmoustir@gmail.com')->send(new SendQrCodeMail($qrCode));
+
         return redirect()->back();
     }
 
@@ -79,6 +85,7 @@ class passeger_courseController extends Controller
         return redirect()->back();
     }
 
-   
+//    public function chats($id){
+//    }
 
 }

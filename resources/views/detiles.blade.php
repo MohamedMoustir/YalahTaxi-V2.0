@@ -107,6 +107,8 @@
                         <div class="font-bold">{{ $places }}passagers</div>
                     </div>
                 </div>
+        
+                <button class="bg-green-700 text-white"> <a href="{{route('user.chats',$trajets->driveer->user_id)  }}">Chat</a> </button>
 
                 <h3 class="text-xl font-bold mb-2">À propos</h3>
                 <p class="text-gray-600">Conducteur professionnel avec véhicule haut de gamme. Parfaitement à l'heure et connais parfaitement le réseau routier marocain.</p>
@@ -124,81 +126,81 @@
         <!-- Booking Widget -->
      <!-- Booking Widget -->
      @if ($disponibilites->statuts == 'disponible' && $places < 6 )
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold mb-6">Réserver ce conducteur</h2>
-        <form id="bookingForm" action="{{ route('reservations') }}" method="post">
-            @csrf
-            <div class="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-gray-700 mb-2">Date de prise en charge</label>
-                    <input name="departure_time" type="text" 
-                           class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400" value="">
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">- ville depart</label>
-                    <select name="depart" id="passengerSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400" onchange="values(this.value)">
+    
+     <div class="bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold mb-6">Réserver ce conducteur</h2>
+    <form id="bookingForm" action="{{ route('payment') }}" method="post">
+        @csrf
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <label class="block text-gray-700 mb-2">Date de prise en charge</label>
+                <input name="departure_time" type="date" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400" value="">
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-2">Ville départ</label>
+                <select name="depart" id="passengerSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400">
                     @foreach ($details_trajet as $key => $trajet)
                         <option value="{{ $trajet->point_de_pause }}">{{ $trajet->point_de_pause }}</option>
                     @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">- ville arriver</label>
-                    <select name="arriver" id="passengerSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400" onchange="values(this.value)">
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-2">Ville arrivée</label>
+                <select name="arriver" id="passengerSelect" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400">
                     @foreach ($details_trajet as $key => $trajet)
                         <option value="{{ $trajet->point_de_pause }}">{{ $trajet->point_de_pause }}</option>
                     @endforeach
-                    </select>
-                </div>
+                </select>
             </div>
-            <input type="hidden" name="course_id" value="{{ $course->id }}">
-            <!-- Price Breakdown -->
-            <div class="border p-4 rounded-lg mb-6">
-                <h4 class="font-bold mb-3">Détail du prix</h4>
-                <div class="flex justify-between mb-2">
-                    <span>Tarif de base:</span>
-                    <span id="basePrice">200 MAD</span>
-                </div>
-                <div class="flex justify-between mb-2">
-                    <span>Frais de service:</span>
-                    <span id="serviceFee">50 MAD</span>
-                </div>
-                <hr class="my-3">
-                <div class="flex justify-between font-bold">
-                    <span>Total:</span>
-                    <span id="total">250 MAD</span>
-                </div>
-            </div>
-            <div class="">
-                 <input name="driveer_id" type="text" value="{{ $trajets->driveer->id }}">
-            </div>
-            <button type="submit" 
-                    class="w-full bg-amber-400 text-gray-900 py-3 px-6 rounded font-bold hover:bg-amber-500 transition">
-                Confirmer la réservation
-            </button>
-        </form>
-    </div>
-    <form action="{{ route('payment') }}" method="POST">
-    @csrf
-    <div>
-        <label for="amount">Montant :</label>
-        <input type="text" id="amount" name="amount" value="200">
-    </div>
+        </div>
 
-    <div>
-        <label for="currency">Devise :</label>
-        <select id="currency" name="currency" >
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <!-- Ajoute d'autres devises ici -->
-        </select>
-    </div>
+        <input type="hidden" name="course_id" value="{{ $course->id }}">
 
-    <div>
-        <button type="submit">Payer</button>
-    </div>
-</form>
+        <!-- Détail du prix -->
+        <div class="border p-4 rounded-lg mb-6">
+            <h4 class="font-bold mb-3">Détail du prix</h4>
+            <div class="flex justify-between mb-2">
+                <span>Tarif de base:</span>
+                <span id="basePrice">200 MAD</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span>Frais de service:</span>
+                <span id="serviceFee">50 MAD</span>
+            </div>
+            <hr class="my-3">
+            <div class="flex justify-between font-bold">
+                <span>Total:</span>
+                <span id="total">250 MAD</span>
+            </div>
+        </div>
+
+        <input type="hidden" name="driver_id" value="{{ $trajets->driveer->id }}">
+
+        <!-- Montant et devise -->
+        <div class="mb-4">
+            <label for="amount" class="block text-gray-700">Montant :</label>
+            <input type="text" id="amount" name="amount" value="250" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400">
+        </div>
+
+        <div class="mb-4">
+            <label for="currency" class="block text-gray-700">Devise :</label>
+            <select id="currency" name="currency" class="w-full p-2 border rounded focus:ring-2 focus:ring-amber-400">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <!-- Ajoute d'autres devises ici -->
+            </select>
+        </div>
+
+        <!-- Bouton de soumission unique -->
+        <button type="submit" class="w-full bg-amber-400 text-gray-900 py-3 px-6 rounded font-bold hover:bg-amber-500 transition">
+            Confirmer la réservation et procéder au paiement
+        </button>
+    </form>
+</div>
+
+   
+
 
 @elseif($places == 6)
 
@@ -288,44 +290,185 @@
     @endif
    
     
-        <!-- Reviews -->
-        <h2 class="text-2xl font-bold my-8">Avis clients (45)</h2>
-        
-        <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
-            <div class="flex justify-between items-center mb-2">
-                <div class="text-amber-400">★★★★☆ Ahmed S.</div>
-                <small class="text-gray-500">15 mars 2024</small>
+
+    <section class="bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+        <!-- Reviews Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-amber-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                Avis clients ({{ $comments->total() }})
+            </h2>
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-semibold text-amber-600">{{ number_format($comments->avg('rating'), 1) }}</span>
+                <div class="flex text-amber-400">
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= round($comments->avg('rating')))
+                            <span>★</span>
+                        @else
+                            <span class="text-gray-300">★</span>
+                        @endif
+                    @endfor
+                </div>
             </div>
-            <p class="text-gray-600">"Trajet très confortable et conducteur très professionnel. Je recommande !"</p>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="space-y-6">
+            @forelse ($comments as $comment)
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all group relative">
+                    <!-- Review Actions Dropdown -->
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="text-gray-500 hover:text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                </svg>
+                            </button>
+
+                            <div x-show="open" @click.away="open = false" 
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-20">
+                                @if (auth()->id() == $comment->user_id)
+                                    <a href="{{ route('comment.edit', $comment->id) }}" 
+                                       class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                        Modifier
+                                    </a>
+                                    <form action="{{ route('comment.delete', $comment->id) }}" method="POST" 
+                                          class="inline w-full">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                @else
+                                    <button class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                        Signaler
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center">
+                            <div class="flex text-amber-400 mr-3">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $comment->rating)
+                                        <span>★</span>
+                                    @else
+                                        <span class="text-gray-300">★</span>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span class="font-semibold text-gray-700">{{ $comment->user->name }}</span>
+                        </div>
+                        <small class="text-gray-500 text-sm">
+                            {{ $comment->created_at->diffForHumans() }}
+                        </small>
+                    </div>
+                    <p class="text-gray-600 italic">{{ $comment->content }}</p>
+                </div>
+            @empty
+                <div class="text-center py-12 bg-white rounded-xl shadow-md">
+                    <p class="text-gray-500 text-xl">Aucun avis pour le moment</p>
+                </div>
+            @endforelse
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-center items-center gap-4 my-8">
-            <button class="px-4 py-2 border rounded hover:bg-gray-100">← Précédent</button>
-            <span class="text-gray-600">Page 1 sur 3</span>
-            <button class="px-4 py-2 border rounded hover:bg-gray-100">Suivant →</button>
+        <div class="mt-8">
+            {{ $comments->links() }}
         </div>
-    </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
-        <div class="bg-white p-8 rounded-lg max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold mb-4 text-center">🎉 Réservation confirmée !</h2>
-            <p class="text-center mb-4">Votre réservation avec Mohamed K. est confirmée pour le <span id="bookingDate"></span></p>
+   
+        <!-- Add Review Form -->
+        <div class="bg-white p-8 rounded-xl shadow-lg mt-8">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 text-center">Ajouter un avis</h3>
+            <form action="{{ route('comment.poster') }}" method="post" class="space-y-6">
+                @csrf
+                <input type="hidden" name="driver_id" value="{{ $trajets->driveer->id }}">
+                
+                <!-- Star Rating -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Votre note</label>
+                    <div id="starRating" class="flex justify-center space-x-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <span data-rating="{{ $i }}" 
+                                  class="star text-5xl cursor-pointer text-gray-300 hover:text-amber-400 transition-colors">
+                                ★
+                            </span>
+                        @endfor
+                    </div>
+                    <input type="hidden" id="rating" name="rating" value="0" required>
+                </div>
+
+                <!-- Review Textarea -->
+                <div>
+                    <label for="content" class="block text-gray-700 mb-2">Votre avis</label>
+                    <textarea 
+                        name="content" 
+                        id="content"
+                        rows="4" 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-amber-400 transition"
+                        placeholder="Partagez votre expérience..."
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-amber-500 text-white py-3 rounded-lg font-bold hover:bg-amber-600 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-50"
+                >
+                    Publier mon avis
+                </button>
+            </form>
+        </div> 
+   
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const starRating = document.getElementById('starRating');
+    const ratingInput = document.getElementById('rating');
+    const stars = starRating.querySelectorAll('.star');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-rating');
+            ratingInput.value = rating;
             
-            <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                <p class="text-center">Référence: GTG-458796</p>
-                <p class="text-center font-bold">Montant total: 250 MAD</p>
-            </div>
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('text-gray-300');
+                    s.classList.add('text-amber-400');
+                } else {
+                    s.classList.remove('text-amber-400');
+                    s.classList.add('text-gray-300');
+                }
+            });
+        });
+    });
+});
+</script>
+ <script>
+        // Dynamic star rating display
+        const ratingInput = document.getElementById('rating');
+        const ratingDisplay = document.getElementById('ratingDisplay');
 
-            <button onclick="closeConfirmation()" 
-                    class="w-full bg-amber-400 text-gray-900 py-2 px-4 rounded font-bold hover:bg-amber-500">
-                Fermer
-            </button>
-        </div>
-    </div>
+        ratingInput.addEventListener('input', function() {
+            const stars = ['★', '★★', '★★★', '★★★★', '★★★★★'];
+            ratingDisplay.textContent = stars[this.value - 1];
+        });
 
-    <script>
+       
+
+   
         // Mêmes fonctions JavaScript que précédemment
         function showConfirmation(event) {
             event.preventDefault();
@@ -357,6 +500,56 @@
         document.getElementById('total').innerHTML = totalPrice + ' MAD';
         }
         
+        
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const starRating = document.getElementById('starRating');
+        const ratingInput = document.getElementById('rating');
+        const stars = starRating.querySelectorAll('.star');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const rating = star.getAttribute('data-rating');
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.remove('text-gray-300');
+                        s.classList.add('text-amber-400');
+                    } else {
+                        s.classList.remove('text-amber-400');
+                        s.classList.add('text-gray-300');
+                    }
+                });
+            });
+
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-rating');
+                ratingInput.value = rating;
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.remove('text-gray-300');
+                        s.classList.add('text-amber-400');
+                    } else {
+                        s.classList.remove('text-amber-400');
+                        s.classList.add('text-gray-300');
+                    }
+                });
+            });
+        });
+
+        starRating.addEventListener('mouseleave', () => {
+            const currentRating = ratingInput.value;
+            stars.forEach((s, index) => {
+                if (index < currentRating) {
+                    s.classList.remove('text-gray-300');
+                    s.classList.add('text-amber-400');
+                } else {
+                    s.classList.remove('text-amber-400');
+                    s.classList.add('text-gray-300');
+                }
+            });
+        });
+    });
+
     </script>
      <script>
         function notifyMe(driverId) {

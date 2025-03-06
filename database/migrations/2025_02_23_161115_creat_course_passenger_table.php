@@ -22,6 +22,8 @@ return new class extends Migration
             $table->datetime('departure_time');
             $table->enum('status',['pending','approved','refuser'])->default('pending');
             $table->decimal('price', 8, 2);
+            $table->string('payment_id')->unique()->nullable()->after('id');
+            $table->foreign('payment_id')->references('payment_id')->on('payments')->onDelete('set null');
             $table->timestamps();
         });
     }

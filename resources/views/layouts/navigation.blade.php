@@ -86,24 +86,24 @@
             }
         }
     </style>
-      <style>
-    .notification-popup {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 320px;
-      margin-top: 0.5rem;
-      background-color: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      z-index: 50;
-    }
-    
-    .notification-popup.show {
-      display: block;
-    }
-  </style>
+    <style>
+        .notification-popup {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            margin-top: 0.5rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+        }
+
+        .notification-popup.show {
+            display: block;
+        }
+    </style>
 </head>
 <section class="bg-gray-100 ">
     <!-- Overlay pour fermer le sidebar quand on clique ailleurs -->
@@ -172,13 +172,13 @@
                     <i class="fas fa-check-circle text-gray-500 w-8"></i>
                     <div>
                         @if ($users->email_verified_at)
-                          <p class="text-xs text-gray-500">Statut Vérification</p>
-                        <p class="text-sm font-medium bg-green-600 text-white px-2 rounded">Vérifié</p>
+                            <p class="text-xs text-gray-500">Statut Vérification</p>
+                            <p class="text-sm font-medium bg-green-600 text-white px-2 rounded">Vérifié</p>
                         @else
-                        <p class="text-xs text-gray-500">Statut Vérification</p>
-                        <p class="text-sm font-medium bg-red-600 text-white px-2 rounded">No Vérifié</p>
+                            <p class="text-xs text-gray-500">Statut Vérification</p>
+                            <p class="text-sm font-medium bg-red-600 text-white px-2 rounded">No Vérifié</p>
                         @endif
-                      
+
                     </div>
                 </div>
             </div>
@@ -206,6 +206,11 @@
                     <i class="fas fa-bell text-blue-500 w-8"></i>
                     <span class="text-gray-700">Notifications</span>
                     <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </div>
+            </div>
+            <div class="px-4 py-3 menu-item hover:bg-gray-100 cursor-pointer">
+                <div class="flex items-center">
+                    <i class="fas fa-sign-out-alt text-blue-500 w-8"></i>
                 </div>
             </div>
 
@@ -275,37 +280,26 @@
 
 
                         <section
-    class="container mx-auto flex items-center space-x-4 p-5 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 w-full max-w-6xl">
-    
-    <div
-        class="flex items-center justify-center bg-blue-600 text-white rounded-xl w-16 h-16 shadow-md transition-all duration-300 hover:bg-blue-700 text-lg font-bold">
-        ⭐
-    </div>
+                            class="container mx-auto flex items-center space-x-4 p-5 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 w-full max-w-6xl">
 
-        <div class="flex flex-col">
-            <div class="text-2xl">
-                <span id="points-display" class="text-blue-600 font-extrabold">100</span>
-                <span class="text-gray-700"><span class="font-bold">p</span>oints</span>
+                            <div
+                                class="flex items-center justify-center bg-blue-600 text-white rounded-xl w-16 h-16 shadow-md transition-all duration-300 hover:bg-blue-700 text-lg font-bold">
+                                ⭐
+                            </div>
+
+                            <div class="flex flex-col">
+                                <div class="text-2xl">
+                                    <span id="points-display" class="text-blue-600 font-extrabold">100</span>
+                                    <span class="text-gray-700"><span class="font-bold">p</span>oints</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
+    </div>
 </section>
-
-
-</div>
-</div>
-</div>
-</nav>
-
-
-</div>
-
-</section>
-
-
-
-
-
-
 @yield('content')
 
 
@@ -493,7 +487,7 @@
     closeBtn.addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
 
-  
+
 
     @if(session('status'))
         Swal.fire({

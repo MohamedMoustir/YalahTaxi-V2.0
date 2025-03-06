@@ -151,7 +151,7 @@
                         <div class="flex justify-between items-start mb-6 border-b pb-4">
                             <div>
                                 <h3 class="text-xl font-bold text-gray-800">{{ $trajet->driveer->user->name }}</h3>
-                                <div class="text-amber-400 mt-1">★★★★☆ <span class="text-gray-500 text-sm">(4.8)</span></div>
+                                <div class="text-amber-400 mt-1">★★★★☆ <span class="text-gray-500 text-sm">()</span></div>
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-gray-800">{{ $trajet->trajet->nom }}</h3>
