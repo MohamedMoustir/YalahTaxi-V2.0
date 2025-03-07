@@ -70,7 +70,7 @@ class paymentController extends Controller
                 'cancelUrl' => url('error')
             ))->send();
                  
-
+            session(['id' => $request->driver_id]);
         
 
             if ($response->isRedirect()) {
@@ -84,7 +84,7 @@ class paymentController extends Controller
     }
     public function success(request $request)
     {
-
+        
         if ($request->input('paymentId') && $request->input('PayerID')) {
             $transaction = $this->gateway->completePurchase(array(
                 'payer_id' => $request->input('PayerID'),
@@ -104,10 +104,13 @@ class paymentController extends Controller
                 $payment->amount = $arr['transactions'][0]['amount']['total'];
                 $payment->payment_status = $arr['state'];
                 $payment->currencym = $arr['transactions'][0]['amount']['currency'];
-                $driver = driveer::where('user_id', Auth::id())->first();
-                $payment->driveer_id = $driver->id;
-                $payment->save();
+                // if (session()->has('id')) {
+                //     $driver = driveer::where('id', intval(session('id')))->first();
+                // }         
 
+      
+                $payment->driveer_id =intval(session('id'));
+                $payment->save();
                 $last_course_passenger = course_passenger::latest()->first();
                 $last_course_passenger->payment_id = $arr['id'];
                 $last_course_passenger->save();

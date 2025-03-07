@@ -116,48 +116,44 @@
         </div>
 
         <div class="bg-white shadow-lg rounded-lg p-6">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-6">Trajets Récents</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-yellow-50">
-                        <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Trajet</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origine</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
--                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Revenu</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Trajets Récents</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full border border-gray-200 rounded-lg">
+            <thead class="bg-yellow-100 text-gray-700">
+                <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">ID Trajet</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Date</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Origine</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Destination</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider">Revenu</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                @foreach ($trajets as $trajet)
+                    <tr class="hover:bg-gray-50 transition duration-200">
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TR-{{ $trajet->id }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $trajet->created_at->format('d/m/Y') }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $trajet->nom }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $trajet->details_trajet->point_de_pause ?? 'N/A' }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-right text-green-600 font-semibold">{{ number_format($trajet->prix, 2) }} MAD</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-right">
+                            <a href="{{ route('admin.editetrajet', ['id' => $trajet->id]) }}" 
+                               class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">
+                                <i class="fas fa-edit mr-1"></i> Modifier
+                            </a>
+                            <a href="{{ route('admin.deletetrajet', ['id' => $trajet->id]) }}" 
+                               class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition ml-2">
+                                <i class="fas fa-trash mr-1"></i> Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                    @foreach ($trajets as $trajet)
-
-                        <tr>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TR-{{ $trajet->id }}</td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $trajet->created_at }}</td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{$trajet->nom }}</td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $trajet->details_trajet->point_de_pause }}</td>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"></span>
-                            </td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm text-right text-gray-500">{{ $trajet->prix }} MAD</td>
-                            </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-right text-gray-500">
-                                            <a href="{{route('admin.editetrajet',['id'=>$trajet->id]) }}" class="text-blue-600 hover:text-blue-900 mr-3">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="{{route('admin.deletetrajet',['id'=>$trajet->id]) }}" class="text-red-600 hover:text-red-900">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </td>
-                        </tr>
-                        @endforeach
-                      
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </section>
 

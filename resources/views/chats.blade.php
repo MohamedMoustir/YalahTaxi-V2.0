@@ -1,3 +1,5 @@
+@props(['on'])
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -186,10 +188,40 @@
 
         <!-- Chat Messages -->
         <div class="flex-grow overflow-y-auto p-4 space-y-6 bg-gray-50 custom-scrollbar" id="chat-messages">
+    @foreach ($conversation as $chat)
+        @if ($chat['sender'] == 'user')
+            <div class="flex justify-end items-start space-x-3 message-out">
+                <div>
+                    <div class="bg-blue-500 text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-md">
+                        <p>{{ $chat['message'] }}</p>
+                    </div>
+                    <div class="flex items-center justify-end mt-1 space-x-1">
+                        <span class="text-xs text-gray-500"></span>
+                        <i class="fas fa-check-double text-xs text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="/placeholder.svg?height=40&width=40" alt="Profile"
+                         class="rounded-full w-10 h-10 object-cover border border-gray-200">
+                </div>
+            </div>
+        @else
+            <div class="flex items-start space-x-3 message-in">
+                <div class="relative">
+                    <img src="/placeholder.svg?height=40&width=40" alt="Profile"
+                         class="rounded-full w-10 h-10 object-cover border border-gray-200">
+                </div>
+                <div>
+                    <div class="bg-gray-200 text-black p-3 rounded-2xl rounded-tl-none shadow-sm max-w-md">
+                        <p>{{ $chat['message'] }}</p>
+                    </div>
+                    <span class="text-xs text-gray-500 mt-1 block"></span>
+                </div>
+            </div>
+        @endif
+    @endforeach
+</div>
 
-
-
-        </div>
 
         <!-- Message Input -->
         <div class="bg-white p-4 border-t border-gray-200">
@@ -222,59 +254,59 @@
     <script>
 
         // document.addEventListener('DOMContentLoaded', function () {
-            const chatMessages = document.getElementById('chat-messages');
+        const chatMessages = document.getElementById('chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-            function scrollToBottom() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
+        // // Handle message sending
+        // $("form").submit(function (e) {
+        //     const messageContent = $("#message").val();
+        //     $.post("/chat/{{ $id }}", {
+        //         message: messageContent
+        //     }, function (data, status) {
+        //         console.log('Message sent: ' + data.message);
 
-            // // Handle message sending
-            // $("form").submit(function (e) {
-            //     const messageContent = $("#message").val();
-            //     $.post("/chat/{{ $id }}", {
-            //         message: messageContent
-            //     }, function (data, status) {
-            //         console.log('Message sent: ' + data.message);
+        //         let sendMessage = `
+        //         <div class="flex justify-end items-start space-x-3 message-out">
+        //             <div>
+        //                 <div class="bg-primary text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-md">
+        //                     <p>${data.message}</p>
+        //                 </div>
+        //                 <div class="flex items-center justify-end mt-1 space-x-1">
+        //                     <span class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</span>
+        //                     <i class="fas fa-check-double text-xs text-primary"></i>
+        //                 </div>
+        //             </div>
+        //             <div class="relative">
+        //                 <img src="/placeholder.svg?height=40&width=40" alt="Profile" class="rounded-full w-10 h-10 object-cover border border-gray-200">
+        //             </div>
+        //         </div>
+        //     `;
+        //         $("#chat-messages").append(sendMessage);
+        //         $("#message").val('');
 
-            //         let sendMessage = `
-            //         <div class="flex justify-end items-start space-x-3 message-out">
-            //             <div>
-            //                 <div class="bg-primary text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-md">
-            //                     <p>${data.message}</p>
-            //                 </div>
-            //                 <div class="flex items-center justify-end mt-1 space-x-1">
-            //                     <span class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</span>
-            //                     <i class="fas fa-check-double text-xs text-primary"></i>
-            //                 </div>
-            //             </div>
-            //             <div class="relative">
-            //                 <img src="/placeholder.svg?height=40&width=40" alt="Profile" class="rounded-full w-10 h-10 object-cover border border-gray-200">
-            //             </div>
-            //         </div>
-            //     `;
-            //         $("#chat-messages").append(sendMessage);
-            //         $("#message").val('');
+        //         scrollToBottom();
+        //     });
+        // });
+        // Initialize Pusher
 
-            //         scrollToBottom();
-            //     });
-            // });
-            // Initialize Pusher
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('8573943188c96f14e463', {
+            cluster: 'ap1'
+        });
 
-            Pusher.logToConsole = true;
-            var pusher = new Pusher('8573943188c96f14e463', {
-                cluster: 'ap1'
-            });
-  
-    
-            var channel = pusher.subscribe('YalahTaxi.' + {{ auth()->user()->id }});
-            console.log(channel);
-    
-channel.bind('YalahTaxiChat', function (data) {
-    console.log(data);
-   
-    
-    let receivedMessage = `
+
+        var channel = pusher.subscribe('YalahTaxi.' + {{ auth()->user()->id }});
+        console.log(channel);
+
+        channel.bind('YalahTaxiChat', function (data) {
+            console.log(data);
+
+
+            let receivedMessage = `
     <div class="flex items-start space-x-3 message-in">
         <div class="relative">
             <img src="/placeholder.svg?height=40&width=40" alt="Profile" class="rounded-full w-10 h-10 object-cover border border-gray-200">
@@ -287,12 +319,12 @@ channel.bind('YalahTaxiChat', function (data) {
         </div>
     </div>
     `;
-    $("#chat-messages").append(receivedMessage);
-    scrollToBottom();
-});
+            $("#chat-messages").append(receivedMessage);
+            scrollToBottom();
+        });
 
         // });
- 
+
 
     </script>
 

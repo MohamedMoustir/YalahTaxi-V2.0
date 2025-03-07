@@ -128,58 +128,68 @@
         Les plus aimés
     </button>
 </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            @foreach ($trajets as $trajet)
-            {{ $trajets }}
-                <div class="border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white transform hover:-translate-y-1">
-                    <div class="relative">
-                        <img src="{{ asset('storage/' . $trajet->driveer->user->profile_photo) }}" alt="Photo de trajet" class="w-full h-56 object-cover">
-                        <div class="absolute top-4 right-4">
-                            @if ($trajet->driveer->is_available == true)
-                                <span class="bg-green-100 text-green-800 px-4 py-1 rounded-full text-sm font-medium">
-                                    Disponible
-                                </span>
-                            @else
-                                <span class="bg-red-100 text-red-800 px-4 py-1 rounded-full text-sm font-medium">
-                                    Non disponible
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-6 border-b pb-4">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800">{{ $trajet->driveer->user->name }}</h3>
-                                <div class="text-amber-400 mt-1">★★★★☆ <span class="text-gray-500 text-sm">()</span></div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800">{{ $trajet->trajet->nom }}</h3>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between items-center">
-                            <div class="text-gray-600">
-                                <p class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-500" viewBox="0 0 20 20" fill="currentColor"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H11a1 1 0 001-1v-5h2.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1V5a1 1 0 00-1-1H3z" /></svg>Grand Taxi</p>
-                                <p class="flex items-center mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-500" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM4 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM10 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" /></svg>6 places</p>
-                            </div>
-                            
-                            <div class="text-right">
-                                <p class="text-3xl font-bold text-amber-500">{{ $trajet->trajet->prix }} <span class="text-lg">MAD</span></p>
-                                @if ($trajet->driveer->is_available == true)
-                                    <a href="{{ route('detiles',['id'=>$trajet->driveer->user_id]) }}" class="inline-block mt-3 bg-amber-400 text-gray-900 px-6 py-2 rounded-full hover:bg-amber-500 transition font-medium">
-                                        Voir détails
-                                    </a>
-                                @else
-                                    <button class="inline-block mt-3 bg-gray-300 text-gray-600 px-6 py-2 rounded-full cursor-not-allowed font-medium opacity-70">
-                                        Voir détails
-                                    </button>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+  <div class="grid md:grid-cols-3 gap-8">
+        @foreach ($trajets as $trajet)
+    <div class="border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white transform hover:-translate-y-1">
+        <div class="relative">
+            <img src="{{ asset('storage/' . $trajet->driveer->user->profile_photo) }}" alt="Photo de trajet" class="w-full h-56 object-cover">
+            <div class="absolute top-4 right-4">
+                @if ($trajet->driveer->is_available)
+                    <span class="bg-green-100 text-green-800 px-4 py-1 rounded-full text-sm font-medium">
+                        Disponible
+                    </span>
+                @else
+                    <span class="bg-red-100 text-red-800 px-4 py-1 rounded-full text-sm font-medium">
+                        Non disponible
+                    </span>
+                @endif
+            </div>
+        </div>
+        
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-6 border-b pb-4">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800">{{ $trajet->driveer->user->name }}</h3>
+                    <div class="text-amber-400 mt-1">★★★★☆ <span class="text-gray-500 text-sm">(4.0)</span></div>
                 </div>
-            @endforeach
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800">{{ $trajet->trajet->nom }}</h3>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <div class="text-gray-600">
+                    <p class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                            <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H11a1 1 0 001-1v-5h2.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1V5a1 1 0 00-1-1H3z" />
+                        </svg>
+                        Grand Taxi
+                    </p>
+                    <p class="flex items-center mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM4 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM10 18a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                        </svg>
+                        6 places
+                    </p>
+                </div>
+                
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-amber-500">{{ $trajet->trajet->prix }} <span class="text-lg">MAD</span></p>
+                    @if ($trajet->driveer->is_available)
+                        <a href="{{ route('detiles', ['id' => $trajet->driveer->user_id]) }}" class="inline-block mt-3 bg-amber-400 text-gray-900 px-6 py-2 rounded-full hover:bg-amber-500 transition font-medium">
+                            Voir détails
+                        </a>
+                    @else
+                        <button class="inline-block mt-3 bg-gray-300 text-gray-600 px-6 py-2 rounded-full cursor-not-allowed font-medium opacity-70">
+                            Voir détails
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
         </div>
 
         <!-- Pagination -->

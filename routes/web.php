@@ -11,7 +11,7 @@ use App\Http\Controllers\Commentcontroller;
 use App\Http\Controllers\ChatController;
 use App\Events\sendDriveerMassege;
 use App\Http\Controllers\SendQrCodeMailController;
-
+use App\Http\Middleware\RoleMiddleware;
 
 
 
@@ -28,7 +28,7 @@ Route::get('/', function () {
 //     return view('home');
 // })->middleware(['auth', 'verified'])->name('home');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/home', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/home', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/home', [driverController::class, 'index'])->name('home');
     Route::get('/detiles/{id}', [driverController::class, 'detiles'])->name('detiles');
     Route::post('/reservations', [passeger_courseController::class, 'reservations'])->name('reservations');
@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
 
     Route::get('/admin', [AdminController::class, 'index']);
     Route::post('/store', [trajetController::class, 'store'])->name('admin.store');
@@ -66,10 +66,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/deletetrajet/{id}', [AdminController::class, 'deletetrajet'])->name('admin.deletetrajet');
     Route::get('/editetrajet/{id}', [AdminController::class, 'editetrajet'])->name('admin.editetrajet');
     Route::post('/update', [AdminController::class, 'updateTrajet'])->name('admin.update');
+    Route::get('/user/{id}/toggle-suspend', [AdminController::class, 'toggleSuspend'])->name('admin.toggleSuspend');
 
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/driver', [driverController::class, 'getresevation'])->name('getresevation');
     Route::get('/accepter/{id}', [passeger_courseController::class, 'accepterresevation'])->name('accepter');
     Route::get('/annuler/{id}', [passeger_courseController::class, 'annulerresevation'])->name('annuler');
@@ -107,14 +108,23 @@ Route::middleware('auth')->group(function () {
 
     
     Route::get('/user/chats/{id}', [ChatController::class, 'chatform'])->name('user.chats');
-    Route::post('/user/chats/{id}', [ChatController::class, 'sendMessage'])->name('user.chat');
+    Route::post('/user/chats/{id}', [ChatController::class, 'submit'])->name('user.chat');
+    Route::get('/user/chats/{id}', [ChatController::class, 'mount'])->name('user.chat');
+    Route::post('/driver/chats/{id}', [ChatController::class, 'chatform'])->name('chat');
 
 
-
+    // Route::get('/user//chats/{id}', [driverController::class, 'chatform'])->name('user.chats');
+    // Route::post('/user/chats/{id}', [driverController::class, 'submit'])->name('user.chat');
 
 
 
     // Route::get('/send-qrcode', [SendQrCodeMailController::class, 'sendQrCodeEmail'])->middleware('auth');
+
+    // Route::middleware('auth')->group(function(){
+    //     Route::get('chat', function(){
+    //         return view('chats');
+    //     })->name('chat');
+    // });
 
 });
 

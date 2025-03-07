@@ -31,6 +31,8 @@
     <td><span class="status status-pending">{{ $reserv->status }}</span></td>
 @elseif ($reserv->status == 'approved')
     <td><span class="status status-confirmed">Confirmé</span></td>
+
+   
 @else
     <td><span class="status status-cancelled">Annulé</span></td>
 @endif
@@ -39,6 +41,8 @@
                             <td>
                                 @if ($reserv->status == 'pending')
                                 <a href="{{ Route('accepter',['id'=>$reserv->id]) }}" class="action-btn btn-accept">Accepter</a>
+                                <button class="bg-green-700 text-white"> <a href="{{route('user.chat',$user->id)  }}">Chat</a> </button>
+
                                 <a href="{{ Route('annuler',['id'=>$reserv->id]) }}" class="action-btn btn-reject">annuler</a,>
                                 @elseif($reserv->status == 'approved')
                                 <a href="{{ Route('annuler',['id'=>$reserv->id]) }}" class="action-btn btn-reject">annuler</a,>

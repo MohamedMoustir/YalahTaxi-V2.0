@@ -31,7 +31,7 @@ class driverController extends Controller
             'trajet.course',
             'driveer',
             'driveer.user',
-        
+
         ]);
 
         if ($request->has('search') || $request->has('sear')) {
@@ -48,7 +48,7 @@ class driverController extends Controller
 
         $trajets = $trajets->paginate(6);
         $users = user::find(auth::id());
-     
+
 
         return view('home', compact('trajets', 'users'));
     }
@@ -72,7 +72,7 @@ class driverController extends Controller
 
         // $driver = driveer::where('user_id', Auth::id())->first();
         $disponibilites = disponibilites::where('driveer_id', $driver->id)->latest()->first();
-    
+
         $details_trajet = details_trajet::where('trajet_id', $trajets->trajet->id)->get();
         $course = Course::where('id_driver', $driver->id)->get();
         $course = $course->first();
@@ -80,8 +80,8 @@ class driverController extends Controller
         $places = places::where('statuts', 'réservé')->Where('driveer_id', $id)->count();
 
         $comments = Comment::where('driveer_id', $driver->id)->with('user')->paginate(1);
-       $commentTrue = false;
-        return view('detiles', compact('trajets', 'details_trajet', 'course', 'disponibilites', 'places','comments','commentTrue'))->with('status', 'reservations sucsses');
+        $commentTrue = false;
+        return view('detiles', compact('trajets', 'details_trajet', 'course', 'disponibilites', 'places', 'comments', 'commentTrue'))->with('status', 'reservations sucsses');
 
     }
 
@@ -94,13 +94,13 @@ class driverController extends Controller
                 $query->where('user_id', Auth::id());
             })
             ->get();
-
+        $user = true;
         foreach ($reservation as $q) {
             $user = user::find($q->passenger_id);
         }
 
 
- 
+
         foreach ($reservation as $reservatio) {
             $now = Carbon::now();
             $disponibilites = disponibilites::where('driveer_id', $reservatio->course->id_driver)->latest()->first();
@@ -109,13 +109,13 @@ class driverController extends Controller
             $diffInMinutes = $now->diffInMinutes($departureTime);
 
             if ($diffInMinutes < 0) {
-            
+
                 $reservatio->where('status', 'pending')->update(['status' => 'refuser']);
-                $driver = driveer::where('user_id',Auth::id())->update(['is_available'=>false]);
-                
-            }else{
-                
-                $driver = driveer::where('user_id',Auth::id())->update(['is_available'=>true]);
+                $driver = driveer::where('user_id', Auth::id())->update(['is_available' => false]);
+
+            } else {
+
+                $driver = driveer::where('user_id', Auth::id())->update(['is_available' => true]);
             }
 
         }
@@ -124,7 +124,7 @@ class driverController extends Controller
         // $notifications = $user->notifications;
         // var_dump($notifications);
 
-        return view('driver.index', compact('reservation', 'driver','user'));
+        return view('driver.index', compact('reservation', 'driver', 'user'));
     }
 
 
@@ -179,5 +179,5 @@ class driverController extends Controller
 
 
 
-   
+
 }

@@ -8,8 +8,10 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.31",
+        "laravel/reverb": "^1.0",
         "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.9",
+        "laravel/ui": "^4.6",
         "league/omnipay": "^3.2",
         "omnipay/common": "^3.4",
         "omnipay/paypal": "^3.0",

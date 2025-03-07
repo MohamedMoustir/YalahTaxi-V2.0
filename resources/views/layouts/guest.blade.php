@@ -320,7 +320,7 @@
                 <li><a href="#reservations">Réservations</a></li>
                 <li><a href="{{ route('disponibilites') }}">Disponibilités</a></li>
                 <li><a href="#historique">Historique</a></li>
-                <li><a href="{{route('user.chats',21)}}">Mon profil</a></li>
+                <li><a href="{{route('user.chat',Auth::user()->id)}}">Mon profil</a></li>
                 <li><a href="#parametres">Paramètres</a></li>
             </ul>
         </aside>

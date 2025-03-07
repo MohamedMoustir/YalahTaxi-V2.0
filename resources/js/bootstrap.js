@@ -24,3 +24,11 @@ echo.private('YalahTaxi.' + userId) // Make sure `userId` is defined based on lo
         // You can handle the received message here (e.g., display in the UI)
     });
 
+
+/**
+ * Echo exposes an expressive API for subscribing to channels and listening
+ * for events that are broadcast by Laravel. Echo and event broadcasting
+ * allow your team to quickly build robust real-time web applications.
+ */
+
+import './echo';

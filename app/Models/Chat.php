@@ -17,9 +17,9 @@ class Chat extends Model
   /**
      * Relation entre le chat et l'utilisateur expéditeur.
      */
-    public function sender()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -27,7 +27,7 @@ class Chat extends Model
      */
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(User::class);
     }
 
     /**

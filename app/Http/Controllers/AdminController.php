@@ -14,13 +14,14 @@ class AdminController extends Controller
 {
     public function index()
     {
+
         $users = user::where('role', 'passenger')->count();
         $driver = driveer::count();
 
         $trajets = trajet::count('id');
 
         $payments = payment::with('course_passenger')->get();
-        dd($payments    );
+      
         return view('admin.dashboard', compact('users', 'driver', 'trajets','payments'));
     }
     public function getUsers()
@@ -39,6 +40,8 @@ class AdminController extends Controller
 
     public function Gestion_des_trajets()
     {
+        session(['previous_url' => url()->current()]);
+
         $trajets = trajet::with('details_trajet')->get();
         $trajetsTouts = trajet::count('id');
         return view('admin.trajet', compact('trajets', 'trajetsTouts'));
@@ -67,10 +70,20 @@ class AdminController extends Controller
         $trajets->details_trajet->distance = $request->distance;
         $trajets->details_trajet->price = $request->prix;
         $trajets->save();
-        return redirect(route('trajet'));
+        return redirect(session('previous_url')); 
+
 
     }
 
+    public function toggleSuspend($id)
+    {
+        $user = User::findOrFail($id);
 
+        $user->toggle_suspend = !$user->toggle_suspend;
+        $user->save();
 
+        return redirect()->back()->with('success', 'Le statut de suspension a été mis à jour.');
+    }
 }
+
+

@@ -108,7 +108,7 @@
                     </div>
                 </div>
         
-                <button class="bg-green-700 text-white"> <a href="{{route('user.chats',$trajets->driveer->user_id)  }}">Chat</a> </button>
+                <button class="bg-green-700 text-white"> <a href="{{route('user.chat',$trajets->driveer->user_id)  }}">Chat</a> </button>
 
                 <h3 class="text-xl font-bold mb-2">À propos</h3>
                 <p class="text-gray-600">Conducteur professionnel avec véhicule haut de gamme. Parfaitement à l'heure et connais parfaitement le réseau routier marocain.</p>
